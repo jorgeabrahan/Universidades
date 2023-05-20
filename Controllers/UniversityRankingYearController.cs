@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using universidades.Models;
-// using universidades.Services;
+using universidades.Services;
 
 namespace universidades.Controllers;
 
@@ -9,37 +9,36 @@ namespace universidades.Controllers;
 public class UniversityRankingYearController : ControllerBase
 {
 
-  // IAutorService autorService;
-  // public UniversityRankingYearController(IAutorService serviceAutor)
-  // {
-  //   autorService = serviceAutor;
-  // }
+  IUniversityRankingYearService service;
+  public UniversityRankingYearController(IUniversityRankingYearService universityRankingYearService)
+  {
+    service = universityRankingYearService;
+  }
 
   [HttpPost]
-  public IActionResult createUniversityRankingYear([FromBody] UniversityRankingYear universityRankingYear)
+  public async Task<IActionResult> createUniversityRankingYear([FromBody] UniversityRankingYear universityRankingYear)
   {
-    // autorService.crear(universityRankingYear);
+    await service.create(universityRankingYear);
     return Ok();
   }
 
   [HttpGet]
   public IActionResult readUniversityRankings()
   {
-    // return Ok(autorService.obtener());
-    return Ok();
+    return Ok(service.read());
   }
 
   [HttpPut("{id}")]
-  public IActionResult updateUniversityRankingYear([FromBody] UniversityRankingYear universityRankingYear, Guid id)
+  public async Task<IActionResult> updateUniversityRankingYear([FromBody] UniversityRankingYear universityRankingYear, Guid id)
   {
-    // autorService.actualizar(id, universityRankingYear);
+    await service.update(id, universityRankingYear);
     return Ok();
   }
 
   [HttpDelete("{id}")]
-  public IActionResult deleteUniversityRankingYear(Guid id)
+  public async Task<IActionResult> deleteUniversityRankingYear(Guid id)
   {
-    // autorService.eliminar(id);
+    await service.delete(id);
     return Ok();
   }
 }
