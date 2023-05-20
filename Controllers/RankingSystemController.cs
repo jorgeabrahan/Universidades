@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using universidades.Models;
-// using universidades.Services;
+using universidades.Services;
 
 namespace universidades.Controllers;
 
@@ -8,37 +8,36 @@ namespace universidades.Controllers;
 [Route("api/[controller]")]
 public class RankingSystemController : ControllerBase
 {
-  // IAutorService autorService;
-  // public RankingSystemController(IAutorService serviceAutor)
-  // {
-  //   autorService = serviceAutor;
-  // }
+  IRankingSystemService service;
+  public RankingSystemController(IRankingSystemService rankingSystemService)
+  {
+    service = rankingSystemService;
+  }
 
   [HttpPost]
-  public IActionResult createRankingSystem([FromBody] RankingSystem rankingSystem)
+  public async Task<IActionResult> createRankingSystem([FromBody] RankingSystem rankingSystem)
   {
-    // autorService.crear(rankingSystem);
+    await service.create(rankingSystem);
     return Ok();
   }
 
   [HttpGet]
   public IActionResult readRankingSystems()
   {
-    // return Ok(autorService.obtener());
-    return Ok();
+    return Ok(service.read());
   }
 
   [HttpPut("{id}")]
-  public IActionResult updateRankingSystem([FromBody] RankingSystem rankingSystem, Guid id)
+  public async Task<IActionResult> updateRankingSystem([FromBody] RankingSystem rankingSystem, Guid id)
   {
-    // autorService.actualizar(id, rankingSystem);
+    await service.update(id, rankingSystem);
     return Ok();
   }
 
   [HttpDelete("{id}")]
-  public IActionResult deleteRankingSystem(Guid id)
+  public async Task<IActionResult> deleteRankingSystem(Guid id)
   {
-    // autorService.eliminar(id);
+    await service.delete(id);
     return Ok();
   }
 }
