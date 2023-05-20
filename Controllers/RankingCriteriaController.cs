@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using universidades.Models;
-// using universidades.Services;
+using universidades.Services;
 
 namespace universidades.Controllers;
 
@@ -8,37 +8,36 @@ namespace universidades.Controllers;
 [Route("api/[controller]")]
 public class RankingCriteriaController : ControllerBase
 {
-  // IAutorService autorService;
-  // public RankingCriteriaController(IAutorService serviceAutor)
-  // {
-  //   autorService = serviceAutor;
-  // }
+  RankingCriteriaService service;
+  public RankingCriteriaController(RankingCriteriaService rankingCriteriaService)
+  {
+    service = rankingCriteriaService;
+  }
 
   [HttpPost]
-  public IActionResult createRankingCriteria([FromBody] RankingCriteria rankingCriteria)
+  public async Task<IActionResult> createRankingCriteria([FromBody] RankingCriteria rankingCriteria)
   {
-    // autorService.crear(rankingCriteria);
+    await service.create(rankingCriteria);
     return Ok();
   }
 
   [HttpGet]
   public IActionResult readRankingCriterias()
   {
-    // return Ok(autorService.obtener());
-    return Ok();
+    return Ok(service.read());
   }
 
   [HttpPut("{id}")]
-  public IActionResult updateRankingCriteria([FromBody] RankingCriteria rankingCriteria, Guid id)
+  public async Task<IActionResult> updateRankingCriteria([FromBody] RankingCriteria rankingCriteria, Guid id)
   {
-    // autorService.actualizar(id, rankingCriteria);
+    await service.update(id, rankingCriteria);
     return Ok();
   }
 
   [HttpDelete("{id}")]
-  public IActionResult deleteRankingCriteria(Guid id)
+  public async Task<IActionResult> deleteRankingCriteria(Guid id)
   {
-    // autorService.eliminar(id);
+    await service.delete(id);
     return Ok();
   }
 }
