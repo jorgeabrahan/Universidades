@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using universidades.Models;
-// using universidades.Services;
+using universidades.Services;
 
 namespace universidades.Controllers;
 
@@ -9,37 +9,36 @@ namespace universidades.Controllers;
 public class UniversityController : ControllerBase
 {
 
-  // IAutorService autorService;
-  // public UniversityController(IAutorService serviceAutor)
-  // {
-  //   autorService = serviceAutor;
-  // }
+  IUniversityService service;
+  public UniversityController(IUniversityService universityService)
+  {
+    service = universityService;
+  }
 
   [HttpPost]
-  public IActionResult createUniversity([FromBody] University university)
+  public async Task<IActionResult> createUniversity([FromBody] University university)
   {
-    // autorService.crear(university);
+    await service.create(university);
     return Ok();
   }
 
   [HttpGet]
   public IActionResult readUniversities()
   {
-    // return Ok(autorService.obtener());
-    return Ok();
+    return Ok(service.read());
   }
 
   [HttpPut("{id}")]
-  public IActionResult updateUniversity([FromBody] University university, Guid id)
+  public async Task<IActionResult> updateUniversity([FromBody] University university, Guid id)
   {
-    // autorService.actualizar(id, university);
+    await service.update(id, university);
     return Ok();
   }
 
   [HttpDelete("{id}")]
-  public IActionResult deleteUniversity(Guid id)
+  public async Task<IActionResult> deleteUniversity(Guid id)
   {
-    // autorService.eliminar(id);
+    await service.delete(id);
     return Ok();
   }
 }
