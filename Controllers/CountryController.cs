@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using universidades.Models;
-// using universidades.Services;
+using universidades.Services;
 
 namespace universidades.Controllers;
 
@@ -9,37 +9,36 @@ namespace universidades.Controllers;
 public class CountryController : ControllerBase
 {
 
-  // IAutorService autorService;
-  // public CountryController(IAutorService serviceAutor)
-  // {
-  //   autorService = serviceAutor;
-  // }
+  ICountryService service;
+  public CountryController(ICountryService countryService)
+  {
+    service = countryService;
+  }
 
   [HttpPost]
-  public IActionResult createCountry([FromBody] Country country)
+  public async Task<IActionResult> createCountry([FromBody] Country country)
   {
-    // autorService.crear(country);
+    await service.create(country);
     return Ok();
   }
 
   [HttpGet]
   public IActionResult readCountries()
   {
-    // return Ok(autorService.obtener());
-    return Ok();
+    return Ok(service.read());
   }
 
   [HttpPut("{id}")]
-  public IActionResult updateCountry([FromBody] Country country, Guid id)
+  public async Task<IActionResult> updateCountry([FromBody] Country country, Guid id)
   {
-    // autorService.actualizar(id, country);
+    await service.update(id, country);
     return Ok();
   }
 
   [HttpDelete("{id}")]
-  public IActionResult deleteCountry(Guid id)
+  public async Task<IActionResult> deleteCountry(Guid id)
   {
-    // autorService.eliminar(id);
+    await service.delete(id);
     return Ok();
   }
 }
